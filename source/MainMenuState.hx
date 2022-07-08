@@ -279,6 +279,9 @@ class MainMenuState extends MusicBeatState
 			
 			if (ctrl && curSelected == 0)
 			{
+				#if android
+				removeVirtualPad();
+				#end
 				openSubState(new GameplayChangersSubstate());
 			}
 
