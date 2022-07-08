@@ -6,6 +6,7 @@ import android.PermissionsList;
 import android.os.Build.VERSION;
 import android.os.Environment;
 #end
+import flixel.FlxG;
 import flash.system.System;
 import haxe.CallStack.StackItem;
 import haxe.CallStack;

@@ -95,7 +95,7 @@ class ModsMenuState extends MusicBeatState
 		var path:String = SUtil.getPath() + 'modsList.txt';
 		if (FileSystem.exists(path))
 		{
-			var leMods:Array<String> = CoolUtil.coolTextFileSUtil.getPath() + (path);
+			var leMods:Array<String> = CoolUtil.coolTextFile(SUtil.getPath() + path);
 			for (i in 0...leMods.length)
 			{
 				if (leMods.length > 1 && leMods[0].length > 0)
