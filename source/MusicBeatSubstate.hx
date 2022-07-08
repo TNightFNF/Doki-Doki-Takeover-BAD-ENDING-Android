@@ -48,7 +48,7 @@ class MusicBeatSubstate extends FlxSubState
 			controls.removeFlxInput(trackedinputsUI);
 
 		if (virtualPad != null)
-			virtualPad.destroy();
+			remove(virtualPad);
 	}
 
 	public function addPadCamera()
