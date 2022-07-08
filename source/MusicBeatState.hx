@@ -54,7 +54,7 @@ class MusicBeatState extends FlxUIState
 			controls.removeFlxInput(trackedinputsUI);
 
 		if (virtualPad != null)
-			virtualPad.destroy();
+			remove(virtualPad);
 	}
 
 	public function addAndroidControls()
@@ -90,7 +90,7 @@ class MusicBeatState extends FlxUIState
 			controls.removeFlxInput(trackedinputsNOTES);
 
 		if (androidControls != null)
-			androidControls.destroy();
+			remove(androidControls);
 	}
 
 	public function addPadCamera()
