@@ -38,8 +38,8 @@ using StringTools;
 
 class FunkinLua
 {
-	public static var Function_Stop = 1;
-	public static var Function_Continue = 0;
+	public static var Function_Stop = #if android 'Function_Stop' #else 1 #end;
+	public static var Function_Continue = #if android 'Function_Continue' #else 0 #end;
 
 	#if LUA_ALLOWED
 	public var lua:State = null;
@@ -182,7 +182,7 @@ class FunkinLua
 			}
 			else
 			{
-				cervix = Paths.getPreloadPath(cervix);
+				cervix = SUtil.getPath() + Paths.getPreloadPath(cervix);
 				if (FileSystem.exists(cervix))
 				{
 					doPush = true;
@@ -1400,7 +1400,7 @@ class FunkinLua
 			var path:String = Paths.modsJson(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
 			if (!FileSystem.exists(path))
 			{
-				path = Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
+				path = SUtil.getPath() + Paths.json(Paths.formatToSongPath(PlayState.SONG.song) + '/' + dialogueFile);
 			}
 			luaTrace('Trying to load dialogue: ' + path);
 
@@ -1922,8 +1922,6 @@ class FunkinLua
 			FlxG.sound.music.fadeOut(duration, toValue);
 			luaTrace('musicFadeOut is deprecated! Use soundFadeOut instead.', false, true);
 		});
-
-		Discord.DiscordClient.addLuaCallbacks(lua);
 
 		call('onCreate', []);
 		#end

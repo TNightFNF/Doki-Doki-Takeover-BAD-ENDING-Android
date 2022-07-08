@@ -25,6 +25,12 @@ class FlashingState extends MusicBeatState
 		bg.screenCenter(X);
 		FlxTween.tween(bg, {alpha: 1}, 1, {ease: FlxEase.quadOut});
 		add(bg);
+
+		#if android
+		addVirtualPad(NONE, A);
+		virtualPad.alpha = 0;
+		FlxTween.tween(virtualPad, {alpha: 1}, 1, {ease: FlxEase.quadOut});
+		#end
 	}
 
 	override function update(elapsed:Float)
@@ -35,6 +41,9 @@ class FlashingState extends MusicBeatState
 			FlxG.sound.play(Paths.sound('confirmMenu'));
 			FlxTransitionableState.skipNextTransIn = true;
 			FlxTransitionableState.skipNextTransOut = true;
+			#if android
+			FlxTween.tween(virtualPad, {alpha: 0}, 1);
+			#end
 			FlxTween.tween(bg, {alpha: 0}, 1, {
 				onComplete: function(twn:FlxTween)
 				{

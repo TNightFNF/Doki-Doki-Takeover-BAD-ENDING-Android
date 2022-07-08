@@ -177,11 +177,10 @@ class StrumNote extends FlxSprite
 				resetAnim = 0;
 			}
 		}
-		// if(animation.curAnim != null){ //my bad i was upset
-		if (animation.curAnim.name == 'confirm' && !PlayState.isPixelStage)
+
+		if ((animation.curAnim != null && animation.curAnim.name == 'confirm') && !PlayState.isPixelStage)
 		{
 			centerOrigin();
-			// }
 		}
 
 		super.update(elapsed);
@@ -204,7 +203,7 @@ class StrumNote extends FlxSprite
 			colorSwap.saturation = ClientPrefs.arrowHSV[noteData % 4][1] / 100;
 			colorSwap.brightness = ClientPrefs.arrowHSV[noteData % 4][2] / 100;
 
-			if (animation.curAnim.name == 'confirm' && !PlayState.isPixelStage)
+			if ((animation.curAnim != null && animation.curAnim.name == 'confirm') && !PlayState.isPixelStage)
 			{
 				centerOrigin();
 			}

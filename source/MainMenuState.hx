@@ -213,6 +213,11 @@ class MainMenuState extends MusicBeatState
 		}
 		#end
 
+		#if android
+		addVirtualPad(LEFT_FULL, A_B_C_X_Y);
+		virtualPad.y = -44;
+		#end
+
 		super.create();
 	}
 
@@ -239,7 +244,7 @@ class MainMenuState extends MusicBeatState
 
 		if (!selectedSomethin)
 		{
-			var ctrl = FlxG.keys.justPressed.CONTROL;
+			var ctrl = FlxG.keys.justPressed.CONTROL #if android || virtualPad.buttonX.justPressed #end;
 
 			#if debug
 			if (FlxG.keys.justPressed.O)
@@ -352,7 +357,7 @@ class MainMenuState extends MusicBeatState
 			case 'awards':
 				MusicBeatState.switchState(new AchievementsMenuState());
 			case 'credits':
-				if (FlxG.keys.pressed.G)
+				if (FlxG.keys.pressed.G #if android || virtualPad.buttonY.pressed #end)
 				{
 					CoolUtil.browserLoad('https://www.youtube.com/watch?v=0MW9Nrg_kZU');
 					FlxG.resetState();
@@ -361,7 +366,7 @@ class MainMenuState extends MusicBeatState
 					MusicBeatState.switchState(new CreditsState());
 			case 'options':
 				#if MODS_ALLOWED
-				if (FlxG.keys.pressed.M && ClientPrefs.storycomplete)
+				if (FlxG.keys.pressed.M #if android || virtualPad.buttonC.pressed #end && ClientPrefs.storycomplete)
 					MusicBeatState.switchState(new ModsMenuState());
 				else
 				#end

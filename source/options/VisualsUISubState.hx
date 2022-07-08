@@ -62,11 +62,9 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.decimals = 1;
 		addOption(option);
 
-		#if !mobile
-		var option:Option = new Option('FPS Counter', 'If unchecked, hides FPS Counter.', 'showFPS', 'bool', true);
+		var option:Option = new Option('FPS Counter', 'If unchecked, hides FPS Counter.', 'showFPS', 'bool', #if android false #else true #end);
 		addOption(option);
 		option.onChange = onChangeFPSCounter;
-		#end
 
 		var option:Option = new Option('Auto Pause', 'If checked, pauses the game when unfocused.', 'autoPause', 'bool', true);
 		option.onChange = onChangeAutoPause;
@@ -75,13 +73,11 @@ class VisualsUISubState extends BaseOptionsMenu
 		super();
 	}
 
-	#if !mobile
 	function onChangeFPSCounter()
 	{
 		if (Main.fpsVar != null)
 			Main.fpsVar.visible = ClientPrefs.showFPS;
 	}
-	#end
 
 	function onChangeAutoPause()
 	{
