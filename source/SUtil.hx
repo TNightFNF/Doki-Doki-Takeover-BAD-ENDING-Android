@@ -7,6 +7,7 @@ import android.os.Build.VERSION;
 import android.os.Environment;
 #end
 import flixel.FlxG;
+import flixel.util.FlxStringUtil;
 import flash.system.System;
 import haxe.CallStack.StackItem;
 import haxe.CallStack;
@@ -23,8 +24,6 @@ import sys.io.File;
  * ...
  * @author: Saw (M.A. Jigsaw)
  */
-using StringTools;
-
 class SUtil
 {
 	/**
@@ -49,7 +48,7 @@ class SUtil
 			else
 			{
 				SUtil.applicationAlert('Permissions?', 'Please grant the storage permissions in app settings' + '\nPress Ok io close the app');
-				Sys.exit(1);
+				System.exit(1);
 			}
 		}
 
@@ -59,29 +58,11 @@ class SUtil
 			if (!FileSystem.exists(SUtil.getPath()))
 				FileSystem.createDirectory(SUtil.getPath());
 
-			if (!FileSystem.exists(SUtil.getPath() + 'assets/') && !FileSystem.exists(SUtil.getPath() + 'mods/'))
+			if (!FileSystem.exists(SUtil.getPath() + 'assets/'))
 			{
-				SUtil.applicationAlert('Error!', "Whoops, seems like you didn't extract the files from the .APK!\nPlease watch the tutorial by pressing OK.");
+				SUtil.applicationAlert('Error!', "Whoops, seems like you didn't extract the assets/assets folder from the .APK!\nPlease watch the tutorial by pressing OK.");
 				CoolUtil.browserLoad('https://youtu.be/zjvkTmdWvfU');
 				System.exit(1);
-			}
-			else
-			{
-				if (!FileSystem.exists(SUtil.getPath() + 'assets/'))
-				{
-					SUtil.applicationAlert('Error!',
-						"Whoops, seems like you didn't extract the assets/assets folder from the .APK!\nPlease watch the tutorial by pressing OK.");
-					FlxG.openURL('https://youtu.be/zjvkTmdWvfU');
-					System.exit(1);
-				}
-
-				if (!FileSystem.exists(SUtil.getPath() + 'mods/'))
-				{
-					SUtil.applicationAlert('Error!',
-						"Whoops, seems like you didn't extract the assets/mods folder from the .APK!\nPlease watch the tutorial by pressing OK.");
-					FlxG.openURL('https://youtu.be/zjvkTmdWvfU');
-					System.exit(1);
-				}
 			}
 		}
 		#end
@@ -110,14 +91,8 @@ class SUtil
 	static function onCrash(e:UncaughtErrorEvent):Void
 	{
 		var errMsg:String = "";
-		var path:String;
 		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-		var dateNow:String = Date.now().toString();
-
-		dateNow = dateNow.replace(" ", "_");
-		dateNow = dateNow.replace(":", "'");
-
-		path = SUtil.getPath() + "crash/" + "Crash_" + dateNow + ".txt";
+		var path:String = SUtil.getPath() + "crash/" + Application.current.meta.get('file') + "_" + FlxStringUtil.formatTime(Sys.time(), true) + ".txt";
 
 		for (stackItem in callStack)
 		{
@@ -145,7 +120,7 @@ class SUtil
 		Sys.println(errMsg);
 		Sys.println("Crash dump saved in " + Path.normalize(path));
 
-		Application.current.window.alert(errMsg, "Error!");
+		SUtil.applicationAlert('Error!', errMsg);
 		System.exit(1);
 	}
 
