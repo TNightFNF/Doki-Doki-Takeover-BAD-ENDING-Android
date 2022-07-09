@@ -54,7 +54,7 @@ jobs:
           haxelib list
       - name: Compile
         run: haxelib run lime build Project.xml linux -release 
-      - name: Publish Artifacts
+      - name: Publish Artifact
         uses: actions/upload-artifact@v2.2.4
         with:
           name: linuxBuild

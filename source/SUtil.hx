@@ -84,41 +84,39 @@ class SUtil
 	 */
 	public static function uncaughtErrorHandler()
 	{
-		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, onCrash);
-	}
-
-	static function onCrash(e:UncaughtErrorEvent):Void
-	{
-		var errMsg:String = "";
-		var callStack:Array<StackItem> = CallStack.exceptionStack(true);
-
-		for (stackItem in callStack)
+		Lib.current.loaderInfo.uncaughtErrorEvents.addEventListener(UncaughtErrorEvent.UNCAUGHT_ERROR, function(e:UncaughtErrorEvent)
 		{
-			switch (stackItem)
+			var callStack:Array<StackItem> = CallStack.exceptionStack(true);
+			var errMsg:String = '';
+
+			for (stackItem in callStack)
 			{
-				case FilePos(s, file, line, column):
-					errMsg += file + " (line " + line + ")\n";
-				default:
-					Sys.println(stackItem);
+				switch (stackItem)
+				{
+					case FilePos(s, file, line, column):
+						errMsg += file + ' (line ' + line + ')\n';
+					default:
+						Sys.println(stackItem);
+				}
 			}
-		}
 
-		errMsg += e.error;
+			errMsg += e.error;
 
-		Sys.println(errMsg);
-		SUtil.applicationAlert('Error!', errMsg);
+			Sys.println(errMsg);
+			SUtil.applicationAlert('Error!', errMsg);
 
-		try
-		{
-			if (!FileSystem.exists(SUtil.getPath() + "crash/"))
-				FileSystem.createDirectory(SUtil.getPath() + "crash/");
+			try
+			{
+				if (!FileSystem.exists(SUtil.getPath() + 'crash/'))
+					FileSystem.createDirectory(SUtil.getPath() + 'crash/');
 
-			File.saveContent(SUtil.getPath() + "crash/" + Application.current.meta.get('file') + "_" + FlxStringUtil.formatTime(Sys.time(), true) + ".log", errMsg + "\n");
-		}
-		catch (x:Dynamic)
-			SUtil.applicationAlert('Error!', "Clouldn't save the crash dump because: " + x);
+				File.saveContent(SUtil.getPath() + 'crash/' + Application.current.meta.get('file') + '_' + FlxStringUtil.formatTime(Sys.time(), true) + '.log', errMsg + "\n");
+			}
+			catch (x:Dynamic)
+				SUtil.applicationAlert('Error!', "Clouldn't save the crash dump because: " + x);
 
-		System.exit(1);
+			System.exit(1);
+		});
 	}
 
 	static function applicationAlert(title:String, description:String)
@@ -138,10 +136,7 @@ class SUtil
 			SUtil.applicationAlert('Done!', 'File Saved Successfully!');
 		}
 		catch (e:Dynamic)
-		{
-			openfl.system.System.setClipboard(fileData);
-			SUtil.applicationAlert('Done!', 'Data Saved to Clipboard Successfully!');
-		}
+			SUtil.applicationAlert('Error!', "Clouldn't save the file because: " + e);
 	}
 
 	public static function copyContent(copyPath:String, savePath:String)
@@ -151,8 +146,8 @@ class SUtil
 			if (!FileSystem.exists(savePath))
 				File.saveBytes(savePath, OpenFlAssets.getBytes(copyPath));
 		}
-		catch (x:Dynamic)
-			SUtil.applicationAlert('Error!', "Clouldn't copy the file because: " + x);
+		catch (e:Dynamic)
+			SUtil.applicationAlert('Error!', "Clouldn't copy the file because: " + e);
 	}
 	#end
 }
